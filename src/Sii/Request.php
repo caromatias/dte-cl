@@ -226,7 +226,6 @@ class Request
                     Cache::put("TOKEN-{$this->id}", $this->token, now()->addHours(6));
                 }
             }
-
         }
 
         return $this->token;
@@ -362,5 +361,26 @@ class Request
         }
 
         return $answer;
+    }
+
+    /**
+     * Agregar el token al cache
+     *
+     * @version 16/05/24
+     */
+    public function addTokenToCache()
+    {
+        return Cache::put("TOKEN-{$this->id}", $this->token, now()->addHours(6));
+    }
+
+
+    /**
+     * Eliminar el token del cache
+     *
+     * @version 16/05/24
+     */
+    public function removeTokenFromCache()
+    {
+        return Cache::forget("TOKEN-{$this->id}");
     }
 }
