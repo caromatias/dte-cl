@@ -19,10 +19,10 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "h4cc/wkhtmltoimage-amd64": "0.12.x",
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
-        "laravel/framework": "^10.0",
+        "laravel/framework": "^11.31",
         "sasco/libredte": "^21.10",
         "symfony/options-resolver": "^5.4",
         "vlucas/phpdotenv": "^5.2"
