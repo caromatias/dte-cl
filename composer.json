@@ -1,5 +1,5 @@
 {
-    "name": "hsd-cl/dte-cl",
+    "name": "caromatias/dte-cl",
     "description": "Laravel Package for Chile DTE",
     "keywords": [
         "sii",
@@ -8,7 +8,7 @@
         "chile",
         "laravel"
     ],
-    "homepage": "https://github.com/hsd-cl/dte-cl",
+    "homepage": "https://github.com/caromatias/dte-cl",
     "license": "AGPL-3.0+",
     "type": "library",
     "authors": [
