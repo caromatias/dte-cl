@@ -7,6 +7,7 @@
 namespace HSDCL\DteCl\Sii\Certification;
 
 use HSDCL\DteCl\Sii\Base\PacketDteBuilder;
+use HSDCL\DteCl\Sii\Base\Source;
 use sasco\LibreDTE\FirmaElectronica;
 use sasco\LibreDTE\Sii\LibroCompraVenta;
 
@@ -63,11 +64,9 @@ class PurchaseBookCertificactionBuilder extends PacketDteBuilder
      * @return bool
      * @author David Lopez <dleo.lopez@gmail.com>
      */
-    public function send(): bool
+    public function send()
     {
-        $this->agent->enviar();
-
-        return true;
+        return $this->agent->enviar();
     }
 
     /**

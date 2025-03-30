@@ -8,18 +8,19 @@
 namespace HSDCL\DteCl\Sii\Certification;
 
 use HSDCL\DteCl\Sii\Base\PacketDteBuilder;
+use HSDCL\DteCl\Sii\Base\Source;
 use HSDCL\DteCl\Util\Exception;
 use sasco\LibreDTE\FirmaElectronica;
 use sasco\LibreDTE\Sii\Dte;
 use sasco\LibreDTE\Sii\EnvioDte;
 
 /**
- * Class ShipmentCertificactionBuilder
+ * Class ShipmentCertificationBuilder
  * Clase para manejar la certificacion de guia de despacho
  * @package HSDCL\DteCl\Sii\Certification
  * @author Danilo Vasques <dvasquezr.ko@gmail.com>
  */
-class ShipmentCertificactionBuilder extends PacketDteBuilder
+class ShipmentCertificationBuilder extends PacketDteBuilder
 {
     /**
      * @var array
@@ -30,7 +31,7 @@ class ShipmentCertificactionBuilder extends PacketDteBuilder
     public $data;
 
     /**
-     * ShipmentCertificactionBuilder constructor.
+     * ShipmentCertificationBuilder constructor.
      * @param FirmaElectronica $firma
      * @param array $folios
      * @param Source $source
@@ -59,11 +60,9 @@ class ShipmentCertificactionBuilder extends PacketDteBuilder
      * @return bool
      * @author Danilo Vasquez <dvasquezr.ko@gmail.com>
      */
-    public function send(): bool
+    public function send()
     {
-        $this->agent->enviar();
-
-        return true;
+        return $this->agent->enviar();
     }
 
     /**

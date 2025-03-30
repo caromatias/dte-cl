@@ -6,6 +6,8 @@
 
 namespace HSDCL\DteCl\Sii\Certification;
 
+use HSDCL\DteCl\Sii\Base\PacketDteBuilder;
+use HSDCL\DteCl\Sii\Base\Source;
 use sasco\LibreDTE\FirmaElectronica;
 use sasco\LibreDTE\Sii\EnvioDte;
 use sasco\LibreDTE\Sii\EnvioRecibos;
@@ -105,19 +107,24 @@ class StageExchangeSendReceiptBuilder extends PacketDteBuilder
         # Objeto EnvioRecibo, asignar carátula y Firma
         $answerSend = new EnvioRecibos();
         # Aqui podríamos usar un especie dirty o clean para saber si la caratula esta
-        $answerSend->setCaratula($this->caratula);
+        $answerSend->setCaratula([
+            'RutResponde'  => $this->caratula['RutResponde'],
+            'RutRecibe'    => $this->caratula['RutRecibe'],
+            'NmbContacto'  => $this->caratula['NmbContacto'],
+            'MailContacto' => $this->caratula['MailContacto'],
+        ]);
         $answerSend->setFirma($this->firma);
         # Procesar cada DTE
         foreach ($this->getAgent()->getDocumentos() as $document) {
             $answerSend->agregar([
-                'TipoDoc'       => $document->getTipo(),
-                'Folio'         => $document->getFolio(),
-                'FchEmis'       => $document->getFechaEmision(),
-                'RUTEmisor'     => $document->getEmisor(),
-                'RUTRecep'      => $document->getReceptor(),
-                'MntTotal'      => $document->getMontoTotal(),
-                'Recinto'       => 'Oficina central', // ¿Deberá ser parameterizable?
-                'RutFirma'      => $caratula['RutFirma'],
+                'TipoDoc'   => $document->getTipo(),
+                'Folio'     => $document->getFolio(),
+                'FchEmis'   => $document->getFechaEmision(),
+                'RUTEmisor' => $document->getEmisor(),
+                'RUTRecep'  => $document->getReceptor(),
+                'MntTotal'  => $document->getMontoTotal(),
+                'Recinto'   => 'Oficina central', // ¿Deberá ser parameterizable?
+                'RutFirma'  => $this->firma->getID(),
             ]);
         }
         # Generar xml

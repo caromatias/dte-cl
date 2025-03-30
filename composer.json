@@ -1,5 +1,5 @@
 {
-    "name": "hsd-cl/dte-cl",
+    "name": "caromatias/dte-cl",
     "description": "Laravel Package for Chile DTE",
     "keywords": [
         "sii",
@@ -8,7 +8,7 @@
         "chile",
         "laravel"
     ],
-    "homepage": "https://github.com/hsd-cl/dte-cl",
+    "homepage": "https://github.com/caromatias/dte-cl",
     "license": "AGPL-3.0+",
     "type": "library",
     "authors": [
@@ -19,17 +19,17 @@
         }
     ],
     "require": {
-        "php": "^7.3",
+        "php": "^8.2",
         "h4cc/wkhtmltoimage-amd64": "0.12.x",
         "h4cc/wkhtmltopdf-amd64": "0.12.x",
-        "laravel/framework": "^8.44",
+        "laravel/framework": "^11.31",
         "sasco/libredte": "^21.10",
         "symfony/options-resolver": "^5.4",
         "vlucas/phpdotenv": "^5.2"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.0",
-        "phpunit/phpunit": "9.2.2"
+        "orchestra/testbench": "^8.0",
+        "phpunit/phpunit": "^10.0"
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +38,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "HSDCL\\DteCl\\Tests\\": "tests"
+            "HSDCL\\DteCl\\Tests\\": "tests",
+            "HSDCL\\DteCl\\Tests\\Feature\\": "tests/Feature"
         }
     },
     "scripts": {

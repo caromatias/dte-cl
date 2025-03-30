@@ -127,6 +127,60 @@ class Request
     ];
 
     /**
+     * Rechazado por Error en Schema
+     */
+    const RESPONSE_STATUS_TRACKING_RSC = 'RSC';
+
+    /**
+     * Schema Validado
+     */
+    const RESPONSE_STATUS_TRACKING_SOK = 'SOK';
+
+    /**
+     * Carátula OK
+     */
+    const RESPONSE_STATUS_TRACKING_CRT = 'CRT';
+
+    /**
+     * Rechazado por Error en Firma
+     */
+    const RESPONSE_STATUS_TRACKING_RFR = 'RFR';
+
+    /**
+     * Firma de Envió Validada
+     */
+    const RESPONSE_STATUS_TRACKING_FOK = 'FOK';
+
+    /**
+     * Envió en Proceso
+     */
+    const RESPONSE_STATUS_TRACKING_PDR = 'PDR';
+
+    /**
+     * Rechazado por Error en Carátula
+     */
+    const RESPONSE_STATUS_TRACKING_RCT = 'RCT';
+
+    /**
+     * Envió Procesado
+     */
+    const RESPONSE_STATUS_TRACKING_EPR = 'EPR';
+
+    /**
+     * Traduccion mensajes tracking status
+     */
+    const RESPONSE_STATUS_TRACKING_MESSAGES = [
+        self::RESPONSE_STATUS_TRACKING_RSC => 'RECHAZADO POR ERROR EN SCHEMA',
+        self::RESPONSE_STATUS_TRACKING_SOK => 'SCHEMA VALIDADO',
+        self::RESPONSE_STATUS_TRACKING_CRT => 'CARÁTULA OK',
+        self::RESPONSE_STATUS_TRACKING_RFR => 'RECHAZADO POR ERROR EN FIRMA',
+        self::RESPONSE_STATUS_TRACKING_FOK => 'FIRMA DE ENVIÓ VALIDADA',
+        self::RESPONSE_STATUS_TRACKING_PDR => 'ENVIÓ EN PROCESO',
+        self::RESPONSE_STATUS_TRACKING_RCT => 'RECHAZADO POR ERROR EN CARÁTULA',
+        self::RESPONSE_STATUS_TRACKING_EPR => 'ENVIÓ PROCESADO',
+    ];
+
+    /**
      * @var FirmaElectronica
      */
     private $signature;
@@ -150,10 +204,6 @@ class Request
      */
     public function __construct(array $config, string $id = null)
     {
-        $keys = ['cert', 'pkey'];
-        if (!Arr::validateKeys($config, $keys)) {
-            throw new Exception("No se encuentran los datos para la conexión. Asegurese de que cert y pkey esten");
-        }
         $this->signature = new FirmaElectronica($config);
         $this->id = $id;
     }
@@ -176,7 +226,6 @@ class Request
                     Cache::put("TOKEN-{$this->id}", $this->token, now()->addHours(6));
                 }
             }
-
         }
 
         return $this->token;
@@ -187,17 +236,18 @@ class Request
      * @version 2/12/21
      * @author  David Lopez <dlopez@hsd.cl>
      */
-    public function sendDte(string $rutSender, string $rutEmitter, SimpleXMLElement $xml, int $enviroment = Sii::CERTIFICACION, bool $gzip = false, int $retry = null)
+    public function sendDte(string $rutSender, string $rutEmitter, string $xml, int $environment = Sii::CERTIFICACION, bool $gzip = false, int $retry = null)
     {
         # Definir el ambiente, ¿como sera el comportamiento cuando varios esten accediendo
         # y cambiando el entorno
-        Sii::setAmbiente($enviroment);
+        Sii::setAmbiente($environment);
 
         return \sasco\LibreDTE\Sii::enviar($rutSender, $rutEmitter, $xml, $this->getToken(), $gzip, $retry);
     }
 
     /**
      * Consume el WDSL QueryEstDte
+     *
      *
      * Los parametros necesarios:
      * RutConsultante
@@ -216,8 +266,10 @@ class Request
      * @version 13/12/21
      * @author  David Lopez <dlopez@hsd.cl>
      */
-    public function statusDte(array $args)
+    public function statusDte(array $args, int $environment = Sii::CERTIFICACION)
     {
+        Sii::setAmbiente($environment);
+
         # Validar los argumentos enviados correspondan
         $keys = [
             'RutConsultante',
@@ -269,8 +321,10 @@ class Request
      * @version 14/12/21
      * @author  David Lopez <dlopez@hsd.cl>
      */
-    public function statusPacketDte(array $args)
+    public function statusPacketDte(array $args, int $environment = Sii::CERTIFICACION)
     {
+        Sii::setAmbiente($environment);
+
         # Validar los argumentos enviados correspondan
         $keys = [
             'Rut',
@@ -307,5 +361,26 @@ class Request
         }
 
         return $answer;
+    }
+
+    /**
+     * Agregar el token al cache
+     *
+     * @version 16/05/24
+     */
+    public function addTokenToCache()
+    {
+        return Cache::put("TOKEN-{$this->id}", $this->token, now()->addHours(6));
+    }
+
+
+    /**
+     * Eliminar el token del cache
+     *
+     * @version 16/05/24
+     */
+    public function removeTokenFromCache()
+    {
+        return Cache::forget("TOKEN-{$this->id}");
     }
 }

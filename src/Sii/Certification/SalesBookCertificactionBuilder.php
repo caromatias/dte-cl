@@ -8,6 +8,7 @@
 namespace HSDCL\DteCl\Sii\Certification;
 
 use HSDCL\DteCl\Sii\Base\PacketDteBuilder;
+use HSDCL\DteCl\Sii\Base\Source;
 use Illuminate\Support\Facades\Log;
 use sasco\LibreDTE\FirmaElectronica;
 use sasco\LibreDTE\Sii\EnvioDte;
@@ -78,11 +79,9 @@ class SalesBookCertificactionBuilder extends PacketDteBuilder
      * @return bool
      * @author Danilo Vasquez <dvasquezr.ko@gmail.com>
      */
-    public function send(): bool
+    public function send()
     {
-        $this->agent->enviar();
-
-        return true;
+        return $this->agent->enviar();
     }
 
     /**
